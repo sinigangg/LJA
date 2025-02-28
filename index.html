@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Viana 💖</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Lovers+Quarrel&family=Great+Vibes&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Dancing Script', cursive; /* A romantic script font */
             text-align: center;
-            background-color: #ffe4e1;
+            background-color: yellow;
             color: #ff4081;
             padding: 10px;
             display: flex;
@@ -16,6 +18,8 @@
             align-items: center;
             min-height: 100vh;
             box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
         }
         .container {
             max-width: 90%;
@@ -24,18 +28,21 @@
             padding: 20px;
             border-radius: 20px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 10;
         }
         h1 {
-            font-size: 2em;
+            font-size: 3em;
+            font-family: 'Great Vibes', cursive;
         }
         p {
-            font-size: 1em;
+            font-size: 1.2em;
         }
         .button-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
+            gap: 40px;
             margin-top: 20px;
             position: relative;
         }
@@ -47,43 +54,107 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
+            position: relative;
         }
         .btn:hover {
             background-color: #e91e63;
         }
         .hidden {
             display: none;
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
         }
-        .no-btn {
-            position: static;
+        .flower, .heart {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            font-size: 4em;
+            opacity: 0;
+            animation: bloom 5s forwards;
+        }
+        .flower { color: purple; }
+        .heart { color: red; }
+        @keyframes bloom {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.5); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .fade-in {
+            animation: fadeIn 3s ease-in-out forwards;
+        }
+        #noButton {
+            position: absolute;
+        }
+        h2 {
+            font-family: 'Lovers Quarrel', cursive;
+            font-size: 2.5em;
+        }
+        #preMessage h2 {
+            font-family: Arial, sans-serif; /* Revert to default font */
+            font-size: 2em; /* Adjust size if needed */
         }
     </style>
     <script>
-        let hoverCount = 0;
+        let hoverCount = 0; // Track the number of hovers
+
         function showMessage() {
-            document.getElementById('message').classList.remove('hidden');
             document.getElementById('noButton').remove();
+            createEffects();
+            setTimeout(() => {
+                let preMessage = document.getElementById('preMessage');
+                preMessage.classList.remove('hidden');
+                preMessage.classList.add('fade-in');
+                setTimeout(() => {
+                    let message = document.getElementById('message');
+                    message.classList.remove('hidden');
+                    message.classList.add('fade-in');
+                }, 4000);
+            }, 5000);
         }
-        function moveButton() {
-            let btn = document.getElementById('noButton');
-            let x = Math.random() * (window.innerWidth - btn.offsetWidth);
-            let y = Math.random() * (window.innerHeight - btn.offsetHeight);
-            btn.style.position = 'absolute';
-            btn.style.left = `${x}px`;
-            btn.style.top = `${y}px`;
-            
-            hoverCount++;
-            if (hoverCount === 1) {
-                alert("AY?");
-            } else if (hoverCount === 2) {
-                alert("AY !?");
-            } else if (hoverCount === 3) {
-                alert("HALA GRABE?");
-            } else if (hoverCount === 4) {
-                alert("AYAW TALAGA? HAYS KKK");
-            } else {
-                alert("NO!!!");
+
+        function createEffects() {
+            for (let i = 0; i < 200; i++) {
+                let effect = document.createElement('div');
+                effect.classList.add(Math.random() > 0.5 ? 'flower' : 'heart');
+                effect.innerHTML = Math.random() > 0.5 ? '💜' : '❤️';
+                effect.style.left = Math.random() * 100 + 'vw';
+                effect.style.top = Math.random() * 100 + 'vh';
+                document.body.appendChild(effect);
             }
+        }
+
+        function moveNoButton() {
+            hoverCount++;
+            let message = "";
+            switch (hoverCount) {
+                case 1:
+                    message = "AY?";
+                    break;
+                case 2:
+                    message = "AY !?";
+                    break;
+                case 3:
+                    message = "HALA GRABE?";
+                    break;
+                case 4:
+                    message = "LUH AYAW TALAGA?";
+                    break;
+                default:
+                    message = "NO!!!";
+            }
+            alert(message);
+            let button = document.getElementById('noButton');
+            let container = document.querySelector('.button-container');
+            let maxX = container.offsetWidth - button.offsetWidth;
+            let maxY = container.offsetHeight - button.offsetHeight;
+            let x = Math.random() * maxX;
+            let y = Math.random() * maxY;
+            button.style.left = `${x}px`;
+            button.style.top = `${y}px`;
         }
     </script>
 </head>
@@ -104,23 +175,25 @@
     <div class="container">
         <h1> Viana Quinn 💕</h1>
         <p>
-            Happy 5 months of quarrels, tampo, inis, galit, sungit and many more. Hahaha!
+            Happy 5 months of quarrels, tampo, inis, galit, sungit, kulitan and many more. Hahaha!
             I am thankful that I get the chance to be able to know you these past few months.
         </p>
         <p>
-             I know I'm not perfect and I have a lot of flaws. 
-             I am grateful that you have given me the chance to be with you kahit magkalayong agwat tayo.
+            I know I'm not perfect and I have a lot of flaws. 
+            I am grateful that you have given me the chance to be with you kahit magkalayong agwat tayo.
         </p>
         <p>
-             Viana, Will you be my girlfriend?
+            Viana, Will you be my girlfriend?
         </p>
         <h2>Subukan mong mag-NO!!! </h2>
         <div class="button-container">
             <button class="btn" onclick="showMessage()">Yes</button>
-            <button class="btn no-btn" id="noButton" onmouseover="moveButton()">No</button>
+            <button class="btn" id="noButton" onmouseover="moveNoButton()">No</button>
+        </div>
+        <div id="preMessage" class="hidden">
+            <h2> HAHAHAHA WALANG PALAG? YOU'RE MINE NOW!! </h2>
         </div>
         <div id="message" class="hidden">
-            <h2> HAHAHAHA WALANG PALAG? 💖</h2>
             <p> I LOVE YOUUUUU! 💕</p>
         </div>
     </div>
