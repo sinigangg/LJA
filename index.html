@@ -8,7 +8,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Lovers+Quarrel&family=Great+Vibes&display=swap');
 
         body {
-            font-family: 'Dancing Script', cursive; /* A romantic script font */
+            font-family: 'Dancing Script', cursive;
             text-align: center;
             background-color: yellow;
             color: #ff4081;
@@ -73,7 +73,7 @@
             animation: bloom 5s forwards;
         }
         .flower { color: purple; }
-        .heart { color: red; }
+        .heart { color: red; animation: bloom 5s forwards, wiggle 1s infinite alternate; }
         @keyframes bloom {
             0% { opacity: 0; transform: scale(0.5); }
             50% { opacity: 1; transform: scale(1.5); }
@@ -94,12 +94,129 @@
             font-size: 2.5em;
         }
         #preMessage h2 {
-            font-family: Arial, sans-serif; /* Revert to default font */
-            font-size: 2em; /* Adjust size if needed */
+            font-family: Arial, sans-serif;
+            font-size: 2em;
+        }
+        @keyframes wiggle {
+            0% { transform: rotate(-5deg); }
+            100% { transform: rotate(5deg); }
+        }
+        @keyframes pop {
+            0% {transform: scale(1);}
+            50% {transform: scale(1.5);}
+            100% {transform: scale(0);}
+        }
+
+        /* Fireworks CSS */
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: transparent;
+            opacity: 0;
+            animation: explode 1.5s ease-out forwards;
+        }
+
+        .firework::before,
+        .firework::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, transparent 50%, var(--firework-color) 100%);
+            border-radius: 50%;
+            opacity: 0;
+            animation: spark 1s ease-out forwards;
+        }
+
+        .firework::before {
+            transform: translate(-50%, -50%) scale(0);
+            animation-delay: 0.2s;
+        }
+
+        .firework::after {
+            transform: translate(-50%, -50%) scale(0);
+            animation-delay: 0.4s;
+        }
+
+        @keyframes explode {
+            0% {
+                opacity: 1;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.5);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(3);
+            }
+        }
+
+        @keyframes spark {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(3);
+            }
+        }
+
+        /* Heart-shaped Fireworks */
+        .heart-firework {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            opacity: 0;
+            animation: heart-explode 1.5s ease-out forwards;
+        }
+
+        .heart-firework svg {
+            width: 100%;
+            height: 100%;
+            fill: var(--firework-color);
+            animation: heart-spark 1s ease-out forwards;
+        }
+
+        @keyframes heart-explode {
+            0% {
+                opacity: 1;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.5);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(3);
+            }
+        }
+
+        @keyframes heart-spark {
+            0% {
+                opacity: 1;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.5);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(3);
+            }
         }
     </style>
     <script>
-        let hoverCount = 0; // Track the number of hovers
+        let hoverCount = 0;
 
         function showMessage() {
             document.getElementById('noButton').remove();
@@ -117,13 +234,56 @@
         }
 
         function createEffects() {
-            for (let i = 0; i < 200; i++) {
+            // Existing flower and heart effects
+            for (let i = 0; i < 250; i++) {
                 let effect = document.createElement('div');
                 effect.classList.add(Math.random() > 0.5 ? 'flower' : 'heart');
                 effect.innerHTML = Math.random() > 0.5 ? '💜' : '❤️';
                 effect.style.left = Math.random() * 100 + 'vw';
                 effect.style.top = Math.random() * 100 + 'vh';
+                effect.addEventListener('mouseover', function() {
+                    this.style.animation = 'pop 0.5s forwards';
+                    setTimeout(() => {
+                        this.remove();
+                    }, 500);
+                });
                 document.body.appendChild(effect);
+            }
+
+            // Add mini fireworks
+            for (let i = 0; i < 50; i++) {
+                let firework = document.createElement('div');
+                firework.classList.add('firework');
+                firework.style.left = Math.random() * 100 + 'vw';
+                firework.style.top = Math.random() * 100 + 'vh';
+                firework.style.setProperty('--firework-color', `hsl(${Math.random() * 360}, 100%, 50%)`); // Random colors
+                document.body.appendChild(firework);
+
+                // Remove firework after animation
+                setTimeout(() => {
+                    firework.remove();
+                }, 1500);
+            }
+
+            // Add heart-shaped fireworks
+            for (let i = 0; i < 50; i++) {
+                let heartFirework = document.createElement('div');
+                heartFirework.classList.add('heart-firework');
+                heartFirework.style.left = Math.random() * 100 + 'vw';
+                heartFirework.style.top = Math.random() * 100 + 'vh';
+                heartFirework.style.setProperty('--firework-color', `hsl(${Math.random() * 360}, 100%, 50%)`); // Random colors
+                heartFirework.innerHTML = `
+                    <svg viewBox="0 0 32 29.6">
+                        <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
+                        c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
+                    </svg>
+                `;
+                document.body.appendChild(heartFirework);
+
+                // Remove heart firework after animation
+                setTimeout(() => {
+                    heartFirework.remove();
+                }, 1500);
             }
         }
 
@@ -161,17 +321,17 @@
 <body>
     <audio id="bg-music" autoplay loop muted>
         <source src="https://www.dropbox.com/scl/fi/hvi0tnh4codrpc5iu1q01/Jireh-Lim-Magkabilang-Mundo-Lyrics.mp3?rlkey=3tj79vdj52yx404hugk9wk6le&st=2bakxdm3&raw=1" type="audio/mpeg">
-        Your browser does not support the audio element.
+        Your browser does not support the audio element>
     </audio>
-    
+
     <script>
         document.addEventListener('click', function() {
             let audio = document.getElementById('bg-music');
-            audio.muted = false; 
+            audio.muted = false;
             audio.play();
         }, { once: true });
     </script>
-    
+
     <div class="container">
         <h1> Viana Quinn 💕</h1>
         <p>
@@ -179,7 +339,7 @@
             I am thankful that I get the chance to be able to know you these past few months.
         </p>
         <p>
-            I know I'm not perfect and I have a lot of flaws. 
+            I know I'm not perfect and I have a lot of flaws.
             I am grateful that you have given me the chance to be with you kahit magkalayong agwat tayo.
         </p>
         <p>
