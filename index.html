@@ -59,6 +59,7 @@
         }
     </style>
     <script>
+        let hoverCount = 0;
         function showMessage() {
             document.getElementById('message').classList.remove('hidden');
             document.getElementById('noButton').remove();
@@ -70,6 +71,19 @@
             btn.style.position = 'absolute';
             btn.style.left = `${x}px`;
             btn.style.top = `${y}px`;
+            
+            hoverCount++;
+            if (hoverCount === 1) {
+                alert("AY?");
+            } else if (hoverCount === 2) {
+                alert("AY !?");
+            } else if (hoverCount === 3) {
+                alert("HALA GRABE?");
+            } else if (hoverCount === 4) {
+                alert("AYAW TALAGA? HAYS KKK");
+            } else {
+                alert("NO!!!");
+            }
         }
     </script>
 </head>
@@ -106,7 +120,7 @@
             <button class="btn no-btn" id="noButton" onmouseover="moveButton()">No</button>
         </div>
         <div id="message" class="hidden">
-            <h2>🌸 HAHAHAHA WALANG PALAG? 💖</h2>
+            <h2> HAHAHAHA WALANG PALAG? 💖</h2>
             <p> I LOVE YOUUUUU! 💕</p>
         </div>
     </div>
